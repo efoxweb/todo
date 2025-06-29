@@ -16,27 +16,27 @@ class TodoController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'completed' => 'sometimes|boolean',
         ]);
+
+        $validated['completed'] = false;
 
         $todo = Todo::create($validated);
 
         return response()->json($todo, 201);
     }
 
-    public function show(Todo $todo)
+    public function markIncomplete(Todo $todo)
     {
-        return $todo;
+        $todo->completed = false;
+        $todo->save();
+
+        return response()->json($todo);
     }
 
-    public function update(Request $request, Todo $todo)
+    public function markComplete(Todo $todo)
     {
-        $validated = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'completed' => 'sometimes|boolean',
-        ]);
-
-        $todo->update($validated);
+        $todo->completed = true;
+        $todo->save();
 
         return response()->json($todo);
     }
