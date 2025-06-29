@@ -10,14 +10,14 @@ interface TodosState {
     items: Todo[];
     loading: boolean;
     isAddingTodo: boolean;
-    error: string | null;
+    error: string | undefined | null;
 }
 
 const initialState: TodosState = {
     items: [],
     isAddingTodo: false,
     loading: false,
-    error: null,
+    error: undefined,
 };
 
 export const fetchTodos = createAsyncThunk<Todo[], void>(
@@ -76,16 +76,13 @@ const todosSlice = createSlice({
                     state.loading = false;
                 },
             )
-            .addCase(
-                fetchTodos.rejected,
-                (state, action: PayloadAction<Todo[]>) => {
-                    state.loading = false;
-                    state.error = action.error.message;
-                },
-            )
+            .addCase(fetchTodos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
             .addCase(
                 addTodo.fulfilled,
-                (state, action: PayloadAction<Todo[]>) => {
+                (state, action: PayloadAction<Todo>) => {
                     state.items.push(action.payload);
                     state.isAddingTodo = false;
                 },
@@ -95,7 +92,7 @@ const todosSlice = createSlice({
             })
             .addCase(
                 markTodoCompleted.fulfilled,
-                (state, action: PayloadAction<Todo[]>) => {
+                (state, action: PayloadAction<Todo>) => {
                     const index = state.items.findIndex(
                         (todo) => todo.id === action.payload.id,
                     );
@@ -104,7 +101,7 @@ const todosSlice = createSlice({
             )
             .addCase(
                 markTodoIncomplete.fulfilled,
-                (state, action: PayloadAction<Todo[]>) => {
+                (state, action: PayloadAction<Todo>) => {
                     const index = state.items.findIndex(
                         (todo) => todo.id === action.payload.id,
                     );
@@ -113,7 +110,7 @@ const todosSlice = createSlice({
             )
             .addCase(
                 deleteTodo.fulfilled,
-                (state, action: PayloadAction<Todo[]>) => {
+                (state, action: PayloadAction<number>) => {
                     state.items = state.items.filter(
                         (todo) => todo.id !== action.payload,
                     );
