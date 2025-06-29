@@ -19,8 +19,8 @@ function TodoItem({
     title,
     completed,
     className,
-    created_at,
-    updated_at,
+    created_at: _created_at,
+    updated_at: _updated_at,
     ...props
 }: TodoItemProps) {
     const dispatch: AppDispatch = useDispatch();
