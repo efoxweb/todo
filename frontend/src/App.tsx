@@ -14,7 +14,7 @@ function App() {
         <>
             <div className={'bg-blue-900 p-4 text-white mb-6'}>
                 <Container>
-                    <h1 className={'font-bold'}>Rick's TODO List</h1>
+                    <h1 className={'font-bold'}>Rick's TO-DO List</h1>
                 </Container>
             </div>
             <Container>
