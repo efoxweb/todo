@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { fetchTodos } from '../../features/todosSlice.ts';
 import LoadSpinner from '../ui/LoadSpinner.tsx';
 import type { AppDispatch, RootState } from '../../store.ts';
+import TodoItem from './TodoItem.tsx';
 import ErrorNotice from '../ui/ErrorNotice.tsx';
 
 function TodoList() {
@@ -21,9 +22,7 @@ function TodoList() {
     return (
         <ul>
             {todos.map((todo) => (
-                <li key={todo.id}>
-                    {todo.title} {todo.completed ? '✔️' : ''}
-                </li>
+                <TodoItem key={todo.id} {...todo} />
             ))}
         </ul>
     );
