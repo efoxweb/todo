@@ -1,52 +1,31 @@
-import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import TodoList from './components/todos/TodoList.tsx';
+import Container from './components/ui/Container.tsx';
+import TodoInput from './components/todos/TodoInput.tsx';
+import LoadingIndicator from './components/ui/LoadingIndicator.tsx';
+import { useSelector } from 'react-redux';
+import type { RootState } from './store.ts';
 
 function App() {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-        const getTodos = async () => {
-            try {
-                const res = await fetch('http://localhost:8000/api/todos');
-
-                const todos = res.json();
-
-                alert(JSON.stringify(todos));
-            } catch (e) {
-                console.log(e);
-            }
-        };
-
-        getTodos();
-    }, []);
+    const isAddingTodo = useSelector(
+        (state: RootState) => state.todos.isAddingTodo,
+    );
 
     return (
         <>
-            <div className={'bg-blue-900'}>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img
-                        src={reactLogo}
-                        className="logo react"
-                        alt="React logo"
-                    />
-                </a>
+            <div className={'bg-blue-900 p-4 text-white mb-6'}>
+                <Container>
+                    <h1 className={'font-bold'}>Rick's TODO List</h1>
+                </Container>
             </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
+            <Container>
+                <TodoInput />
+                <TodoList />
+                {isAddingTodo && (
+                    <div className={'h-4 my-4'}>
+                        <LoadingIndicator />
+                    </div>
+                )}
+            </Container>
         </>
     );
 }
