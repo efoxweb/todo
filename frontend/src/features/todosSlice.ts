@@ -15,7 +15,7 @@ interface TodosState {
 
 const initialState: TodosState = {
     items: [],
-    isAddingTodo: false;
+    isAddingTodo: false,
     loading: false,
     error: null,
 };
@@ -87,8 +87,12 @@ const todosSlice = createSlice({
                 addTodo.fulfilled,
                 (state, action: PayloadAction<Todo[]>) => {
                     state.items.push(action.payload);
+                    state.isAddingTodo = false;
                 },
             )
+            .addCase(addTodo.rejected, (state) => {
+                state.isAddingTodo = false;
+            })
             .addCase(
                 markTodoCompleted.fulfilled,
                 (state, action: PayloadAction<Todo[]>) => {
