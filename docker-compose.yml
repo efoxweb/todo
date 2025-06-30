@@ -22,7 +22,7 @@ services:
       MYSQL_USER: laravel
       MYSQL_PASSWORD: secret
     volumes:
-      - dbdata:/var/lib/mysq
+      - dbdata:/var/lib/mysql
 
   frontend:
     build:
